@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trai Đẹp Tên Huy</title>
+    <link rel="icon" type="image/jpg" href="FaviconRan.jpg">
+    <style>
+        /* CSS cài đặt nền và font chữ cơ bản */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #333333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* --- PHẦN THAY THẾ CHO h1 (Bao gồm hiệu ứng hover và dòng năng lượng) --- */
+        h1 {
+            color: #ffffff;
+            margin: 0 auto 30px auto; /* Canh giữa tiêu đề */
+            padding-bottom: 10px; /* Tạo không gian cho dòng năng lượng bên dưới */
+            position: relative;
+            display: table; /* Giúp độ rộng của h1 ôm sát chữ để đường kẻ chạy vừa vặn */
+            transition: all 0.3s ease-in-out;
+            cursor: default;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Hiệu ứng phát sáng nhẹ mặc định */
+        }
+
+        /* Khởi tạo dòng năng lượng ẩn ở giữa */
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0; /* Ban đầu độ rộng bằng 0 */
+            height: 3px;
+            background-color: #00FFFF;
+            transition: all 0.4s ease-out; /* Tốc độ chạy ra 2 bên */
+            transform: translateX(-50%); /* Giữ cho dòng kẻ luôn tỏa ra từ tâm */
+            box-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF; /* Hiệu ứng phát sáng cho dòng năng lượng */
+        }
+
+        /* Các hiệu ứng xảy ra khi di chuột vào (Hover) h1 */
+        h1:hover {
+            color: #98FF98; /* Đổi màu chữ */
+            transform: scale(1.1); /* Phóng to 10% */
+            text-shadow: 0 0 15px #98FF98, 0 0 25px #98FF98; /* Hiệu ứng chữ phát sáng mạnh hơn */
+        }
+
+        /* Dòng năng lượng chạy ra 2 bên khi hover */
+        h1:hover::after {
+            width: 100%; /* Kéo dài dòng kẻ ra toàn bộ độ rộng của chữ */
+        }
+
+        /* --- PHẦN QUAN TRỌNG NHẤT: Tạo lưới kiểu Pinterest --- */
+        .gallery {
+            /* Chia làm 5 cột trên màn hình máy tính */
+            column-count: 5; 
+            /* Khoảng cách giữa các cột */
+            column-gap: 20px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Cài đặt cho từng khung chứa ảnh (Ghim/Pin) */
+        .pin {
+            background-color: #FFFFFF;
+            border-radius: 16px; /* Bo góc mềm mại giống Pinterest */
+            margin-bottom: 20px; /* Khoảng cách trên dưới giữa các ảnh */
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            /* break-inside: avoid giúp khung ảnh không bị cắt đôi giữa 2 cột */
+            break-inside: avoid; 
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Hiệu ứng phóng to khi di chuột vào (Hover) */
+        .pin:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Tăng nhẹ bóng đổ cho hợp với hiệu ứng phóng to */
+        }
+
+        /* Cài đặt cho hình ảnh */
+        .pin img {
+            width: 100%; /* Ảnh sẽ tự thu phóng vừa vặn với chiều rộng của cột */
+            border-radius: 12px;
+            display: block; /* Xóa khoảng trống thừa dưới đáy ảnh */
+        }
+
+        /* Cài đặt cho tiêu đề ảnh */
+        .pin p {
+            margin: 12px 5px 5px 5px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        /* --- ĐIỀU CHỈNH CHO ĐIỆN THOẠI VÀ TABLET (Responsive) --- */
+        @media (max-width: 1000px) {
+            .gallery {
+                column-count: 4; /* Tablet hiện 4 cột */
+            }
+        }
+
+        @media (max-width: 700px) {
+            .gallery {
+                column-count: 2; /* Điện thoại lớn hiện 2 cột */
+            }
+        }
+
+        @media (max-width: 400px) {
+            .gallery {
+                column-count: 2; /* Điện thoại nhỏ hiện 2 cột */
+            }
+        }
+
+        /* --- PHẦN CSS MỚI CHO THANH ĐIỀU HƯỚNG VÀ TRANG CÁ NHÂN --- */
+
+        /* Thanh điều hướng bên trái */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: 70px;
+            background-color: #1a1a1a; /* Màu tối hơn nền một chút để tạo chiều sâu */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            gap: 30px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            filter: grayscale(100%) opacity(0.7); /* Làm mờ đi một chút khi chưa chọn */
+        }
+
+        .nav-item:hover {
+            transform: scale(1.2);
+            filter: grayscale(0%) opacity(1);
+            text-shadow: 0 0 15px #ffffff;
+        }
+
+        /* Khung chứa nội dung chính, đẩy sang phải để không bị sidebar đè lên */
+        .main-content {
+            margin-left: 70px;
+            padding: 20px;
+        }
+
+        /* Layout Trang Cá Nhân */
+        #profile-page {
+            display: none; /* Ẩn trang cá nhân mặc định */
+        }
+
+        .profile-container {
+            display: flex;
+            gap: 20px; /* Khoảng cách giữa 2 khung giống trang chủ */
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch; /* Đảm bảo 2 khung cao bằng nhau */
+        }
+
+        /* Cài đặt khung viền cho hiệu ứng năng lượng */
+        .profile-panel {
+            position: relative;
+            background-color: #333333; /* Trùng màu nền trang để giấu viền thừa */
+            border-radius: 16px;
+            padding: 3px; /* Độ dày của dòng năng lượng */
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .profile-panel-left { flex: 1; } /* Khung trái chiếm 1 phần */
+        .profile-panel-right { flex: 3; } /* Khung phải chiếm 3 phần */
+
+        /* Nội dung màu trắng bên trong */
+        .profile-panel-inner {
+            background-color: #ffffff; 
+            border-radius: 14px; /* Nhỏ hơn viền ngoài một chút để tạo sự liền mạch */
+            height: 100%;
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+
+        /* Hiệu ứng tia sáng trắng chạy quanh viền */
+        .profile-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent 70%, #98FF98 100%);
+            animation: spin-energy 3s linear infinite; /* Chạy liên tục */
+            z-index: 1;
+        }
+
+        @keyframes spin-energy {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Điều chỉnh lại cho điện thoại */
+        @media (max-width: 800px) {
+            .profile-container { flex-direction: column; }
+            .main-content { margin-left: 50px; padding: 10px; }
+            .sidebar { width: 50px; }
+            .nav-item { font-size: 22px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="nav-item" onclick="switchPage('home-page')" title="Trang chủ">🏠</div>
+        <div class="nav-item" onclick="switchPage('profile-page')" title="Trang cá nhân">👤</div>
+    </div>
+
+    <div class="main-content">
+        
+        <div id="home-page">
+            <h1>DỰ ÁN TỶ ĐÔ</h1>
+
+                <div class="gallery">
+            
+                    <div class="pin">
+                        <img src="2 con Bò.gif" alt="2 con Bò">
+                        <p>2 con Bò</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Rồng trắng.gif" alt="Rồng trắng">
+                        <p>Rồng trắng</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Bò ăn cơm.gif" alt="Bò ăn cơm">
+                        <p>Bò ăn cơm</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Mèo.gif" alt="Mèo">
+                        <p>Mèo</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Quỷ heo.gif" alt="Quỷ heo">
+                        <p>Quỷ heo</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Rồng đen.gif" alt="Rồng đen">
+                        <p>Rồng đen</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Chồn.gif" alt="Chồn">
+                        <p>Chồn</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thằng lằng.gif" alt="Thằng lằng">
+                        <p>Thằng lằng</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thầy Gộ.gif" alt="Thầy Gộ">
+                        <p>Thầy Gộ</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thỏ.gif" alt="Thỏ">
+                        <p>Thỏ</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Con lải.gif" alt="Con lải">
+                        <p>Con lải</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Cười.gif" alt="Cười">
+                        <p>Cười</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Julien.gif" alt="Julien">
+                        <p>Julien</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Lười.gif" alt="Lười">
+                        <p>Lười</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Mèo slay.gif" alt="Mèo slay">
+                        <p>Mèo slay</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thằng lằng cháy đít.gif" alt="Thằng lằng cháy đít">
+                        <p>Thằng lằng cháy đít</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thỏ, nhưng mà nó....gif" alt="Thỏ, nhưng mà nó....">
+                        <p>Thỏ, nhưng mà nó....</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Wow.gif" alt="Wow">
+                        <p>Wow</p>
+                    </div>
+
+                    <div class="pin">
+                        <img src="Thằng lằng 2.gif" alt="Thằng lằng 2">
+                        <p>Thằng lằng 2</p>
+                    </div>
+
+                </div>
+
+        </div>
+
+        <div id="profile-page">
+            <div class="profile-container">
+                
+                <div class="profile-panel profile-panel-left">
+                    <div class="profile-panel-inner">
+                        <div style="text-align: center;">
+                            <img src="Gary.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #eee; margin-bottom: 10px;">
+                            <h3 style="margin: 0; color: #111;">Phùng Thiếu Gia</h3>
+                            <p style="color: #666; font-size: 14px; margin-top: 5px;">"Designer & Coder ✨"</p>
+                        </div>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+                        <p style="color: #333; font-size: 14px; margin: 10px 0;">📧 phungthieugia@gmail.com</p>
+                        <p style="color: #333; font-size: 14px; margin: 10px 0;">📞 0123 456 789</p>
+                        <p style="color: #333; font-size: 14px; margin: 10px 0;">📍 Trái Đất</p>
+                    </div>
+                </div>
+
+                <div class="profile-panel profile-panel-right">
+                    <div class="profile-panel-inner">
+                        <h2 style="color: #111; margin-top: 0;">Giới thiệu bản thân</h2>
+                        <p style="color: #444; line-height: 1.6;">Chào mọi người 🥂</p>
+                        <p style="color: #444; line-height: 1.6;">Thú thật, cuộc sống của tôi vốn dĩ xoay quanh những con số và những chuyến bay xuyên múi giờ, nên đôi khi tôi quên mất việc phải giới thiệu bản thân sao cho... "bình dân" một chút. Gia đình luôn muốn tôi tiếp quản sản nghiệp, nhưng đam mê của tôi lại nằm ở việc trải nghiệm những giá trị thượng lưu nhất của thế giới 🏎️.</p>
+                        <p style="color: #444; line-height: 1.6;">Tôi không quá quan trọng vật chất, nhưng tôi tin rằng mọi thứ xung quanh mình — từ bộ suit đang mặc đến ly rượu đang cầm — đều phải phản ánh đúng đẳng cấp và gu thẩm mỹ riêng biệt. Rất vui được làm quen với những người cùng tần số! 👔💼✨</p>
+                        
+                        <h3 style="color: #111; margin-top: 30px;">Dự án của Phùng Thiếu Gia</h3>
+                        <div style="display: flex; gap: 15px;">
+                            <img src="Cũng là Thỏ, nhưng mà nó cũng....jpg" style="border-radius: 10px; width: 45%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <img src="Lại là Thằng lằng.jpg" style="border-radius: 10px; width: 45%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchPage(pageId) {
+            // Ẩn tất cả các trang đi
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('profile-page').style.display = 'none';
+            // Chỉ hiện trang được click
+            document.getElementById(pageId).style.display = 'block';
+            
+            // Tự động cuộn lên đầu trang khi chuyển qua lại
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
