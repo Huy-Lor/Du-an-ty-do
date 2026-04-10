@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trai Đẹp Tên Huy</title>
+    <title>Tầng Hầm Của Huy</title>
     <link rel="icon" type="image/jpg" href="FaviconRan.jpg">
     <style>
         /* CSS cài đặt nền và font chữ cơ bản */
@@ -42,9 +42,9 @@
 
         /* Các hiệu ứng xảy ra khi di chuột vào (Hover) h1 */
         h1:hover {
-            color: #98FF98; /* Đổi màu chữ */
+            color: #98ff98; /* Đổi màu chữ */
             transform: scale(1.1); /* Phóng to 10% */
-            text-shadow: 0 0 15px #98FF98, 0 0 25px #98FF98; /* Hiệu ứng chữ phát sáng mạnh hơn */
+            text-shadow: 0 0 15px #98ff98, 0 0 25px #98ff98; /* Hiệu ứng chữ phát sáng mạnh hơn */
         }
 
         /* Dòng năng lượng chạy ra 2 bên khi hover */
@@ -71,13 +71,18 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             /* break-inside: avoid giúp khung ảnh không bị cắt đôi giữa 2 cột */
             break-inside: avoid; 
-            transition: transform 0.2s ease-in-out;
+            transition: all 0.3s ease;
         }
 
         /* Hiệu ứng phóng to khi di chuột vào (Hover) */
         .pin:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Tăng nhẹ bóng đổ cho hợp với hiệu ứng phóng to */
+            z-index: 10; /* Đảm bảo thẻ đang trỏ chuột nằm trên cùng */
+            /* box-shadow: 0 10px 20px rgba(0,0,0,0.3);*/
+            box-shadow: 
+            0 0 0 3px #98FF98, /* Lớp 1: Tạo một đường viền tĩnh, sắc nét dày 3px */
+            0 0 15px rgba(152, 255, 152, 0.8), /* Lớp 2: Tạo hiệu ứng ánh sáng tỏa ra từ viền */
+            0 10px 25px rgba(0, 0, 0, 0.6); /* Lớp 3: Đổ bóng đen phía dưới để tách biệt khỏi nền */
         }
 
         /* Cài đặt cho hình ảnh */
@@ -211,12 +216,85 @@
             .nav-item { font-size: 22px; }
         }
 
+        /* --- CSS CHUẨN CHO KHUNG LIGHTBOX & NÚT LƯU --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            
+            /* Ẩn mặc định với hiệu ứng mượt */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* Javascript sẽ thêm class 'active' này vào để hiện ảnh */
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Vùng chứa cả ảnh và nút lưu */
+        .modal-content-container {
+            display: flex;
+            align-items: flex-start; 
+            gap: 20px; 
+            max-width: 95%;
+            
+            /* Hiệu ứng thu nhỏ ban đầu */
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        /* Khi hiện lên, ảnh nảy về kích thước thật */
+        .modal.active .modal-content-container {
+            transform: scale(1);
+        }
+
+        #modal-img {
+            max-width: 80vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 3px solid #98FF98;
+        }
+
+        #save-btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            background-color: #98FF98;
+            color: black;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap; 
+        }
+
+        #save-btn.is-saved {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #98FF98;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="nav-item" onclick="switchPage('home-page')" title="Trang chủ">🏠</div>
+        <div class="nav-item" onclick="switchPage('archive-page')" title="Kho lưu trữ">📂</div>
         <div class="nav-item" onclick="switchPage('profile-page')" title="Trang cá nhân">🐍</div>
     </div>
 
@@ -243,13 +321,13 @@
                     </div>
 
                     <div class="pin">
-                        <img src="Mèo.gif" alt="Mèo">
-                        <p>Mèo</p>
+                        <img src="Mèo cầm light stick.gif" alt="Mèo cầm light stick">
+                        <p>Mèo cầm light stick</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Quỷ heo.gif" alt="Quỷ heo">
-                        <p>Quỷ heo</p>
+                        <img src="Con Quỷ heo.gif" alt="Con Quỷ heo">
+                        <p>Con Quỷ heo</p>
                     </div>
 
                     <div class="pin">
@@ -258,13 +336,13 @@
                     </div>
 
                     <div class="pin">
-                        <img src="Chồn.gif" alt="Chồn">
-                        <p>Chồn</p>
+                        <img src="Chồn chăm chỉ.gif" alt="Chồn chăm chỉ">
+                        <p>Chồn chăm chỉ</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Thằng lằng.gif" alt="Thằng lằng">
-                        <p>Thằng lằng</p>
+                        <img src="Thằng lằng đập bàn.gif" alt="Thằng lằng đập bàn">
+                        <p>Thằng lằng đập bàn</p>
                     </div>
 
                     <div class="pin">
@@ -273,18 +351,18 @@
                     </div>
 
                     <div class="pin">
-                        <img src="Thỏ.gif" alt="Thỏ">
-                        <p>Thỏ</p>
+                        <img src="Thỏ ăn cà zốt.gif" alt="Thỏ ăn cà zốt">
+                        <p>Thỏ ăn cà zốt</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Con lải.gif" alt="Con lải">
-                        <p>Con lải</p>
+                        <img src="Con Lải.gif" alt="Con Lải">
+                        <p>Con Lải</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Cười.gif" alt="Cười">
-                        <p>Cười</p>
+                        <img src="Con gì đây trời.gif" alt="Con gì đây trời">
+                        <p>Con gì đây trời</p>
                     </div>
 
                     <div class="pin">
@@ -293,13 +371,13 @@
                     </div>
 
                     <div class="pin">
-                        <img src="Lười.gif" alt="Lười">
-                        <p>Lười</p>
+                        <img src="Lười biết cười.gif" alt="Lười biết cười">
+                        <p>Lười biết cười</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Mèo slay.gif" alt="Mèo slay">
-                        <p>Mèo slay</p>
+                        <img src="Con Mèo slay.gif" alt="Con Mèo slay">
+                        <p>Con Mèo slay</p>
                     </div>
 
                     <div class="pin">
@@ -313,13 +391,13 @@
                     </div>
 
                     <div class="pin">
-                        <img src="Wow.gif" alt="Wow">
-                        <p>Wow</p>
+                        <img src="Wowww.gif" alt="Wowww">
+                        <p>Wowww</p>
                     </div>
 
                     <div class="pin">
-                        <img src="Thằng lằng 2.gif" alt="Thằng lằng 2">
-                        <p>Thằng lằng 2</p>
+                        <img src="Thằng lằng nhúng nhảy.gif" alt="Thằng lằng nhúng nhảy">
+                        <p>Thằng lằng nhúng nhảy</p>
                     </div>
 
                 </div>
@@ -327,6 +405,9 @@
         </div>
 
         <div id="profile-page">
+
+            <h1>HỒ SƠ</h1>
+
             <div class="profile-container">
                 
                 <div class="profile-panel profile-panel-left">
@@ -361,6 +442,19 @@
             </div>
         </div>
 
+        <div id="archive-page" class="page" style="display: none;">
+            <h1>KHO LƯU TRỮ</h1>
+                <div id="archive-content" class="gallery">
+                </div>
+        </div>
+
+        <div id="image-modal" class="modal">
+            <div class="modal-content-container">
+                <img id="modal-img" src="" alt="Zoomed image">
+                <button id="save-btn">Lưu</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -374,6 +468,117 @@
             // Tự động cuộn lên đầu trang khi chuyển qua lại
             window.scrollTo(0, 0);
         }
+    </script>
+
+    <div id="image-modal" class="modal">
+        <img id="modal-img" src="" alt="Ảnh phóng to">
+    </div>
+
+        <script>
+        // 1. Khởi tạo kho lưu trữ.
+        let savedItems = JSON.parse(localStorage.getItem('user_saved_pins')) || [];
+        
+        // (Tự động nâng cấp dữ liệu cũ: Nếu ảnh cũ chỉ có link, sẽ tạm gán là "Không có tiêu đề")
+        savedItems = savedItems.map(item => typeof item === 'string' ? { src: item, title: "" } : item);
+
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-img');
+        const saveBtn = document.getElementById('save-btn');
+        
+        // Biến nhớ cả link và tiêu đề của ảnh đang mở
+        let activeSrc = "";
+        let activeTitle = "";
+
+        // 2. Hàm mở Modal (Nhận thêm tiêu đề)
+        function openModal(src, title) {
+            activeSrc = src;
+            activeTitle = title || ""; 
+            modalImg.src = src;
+            modal.classList.add('active');
+            updateSaveButtonState();
+        }
+
+        // 3. Cập nhật trạng thái nút Lưu
+        function updateSaveButtonState() {
+            // Kiểm tra xem link ảnh này đã có trong kho chưa
+            const isSaved = savedItems.some(item => item.src === activeSrc);
+            if (isSaved) {
+                saveBtn.innerText = "Đã Lưu";
+                saveBtn.classList.add('is-saved');
+            } else {
+                saveBtn.innerText = "Lưu";
+                saveBtn.classList.remove('is-saved');
+            }
+        }
+
+        // 4. Xử lý click nút Lưu
+        saveBtn.onclick = () => {
+            const isSaved = savedItems.some(item => item.src === activeSrc);
+            if (isSaved) {
+                // Nếu đã lưu thì Xóa khỏi kho
+                savedItems = savedItems.filter(item => item.src !== activeSrc);
+            } else {
+                // Nếu chưa lưu thì Thêm vào kho dưới dạng một Gói (gồm link và tiêu đề)
+                savedItems.push({ src: activeSrc, title: activeTitle });
+            }
+            localStorage.setItem('user_saved_pins', JSON.stringify(savedItems));
+            updateSaveButtonState();
+            renderArchive();
+        };
+
+        // 5. Đóng modal
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        };
+
+        // 6. Hàm hiển thị kho lưu trữ (Bây giờ in ra cả ảnh lẫn chữ)
+        function renderArchive() {
+            const container = document.getElementById('archive-content');
+            if(!container) return;
+            container.innerHTML = "";
+            
+            savedItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'pin';
+                
+                // Xử lý tiêu đề để tránh lỗi nếu trong tiêu đề có dấu nháy đơn
+                const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : "";
+                
+                // Mã HTML in ra từng thẻ ảnh (giống trang chủ)
+                div.innerHTML = `
+                    <img src="${item.src}" onclick="openModal('${item.src}', '${safeTitle}')" style="width: 100%; display: block; border-radius: 16px;">
+                    <p style="padding: 10px 5px; margin: 0; color: #000; font-size: 15px; font-weight: bold; text-align: left;">${item.title}</p>
+                `;
+                // Bạn có thể đổi color: #000 thành #fff nếu nền thẻ của bạn màu đen nhé
+                
+                container.appendChild(div);
+            });
+        }
+
+        // 7. Gắn sự kiện click cho các ảnh ở TRANG CHỦ để lấy được tiêu đề
+        document.querySelectorAll('.pin').forEach(pin => {
+            const img = pin.querySelector('img');
+            if (img) {
+                img.addEventListener('click', () => {
+                    // Lấy toàn bộ chữ nằm trong khung chứa ảnh đó làm tiêu đề
+                    let title = pin.innerText.trim();
+                    openModal(img.src, title);
+                });
+            }
+        });
+
+        // 8. Hàm chuyển trang
+        const originalSwitchPage = window.switchPage;
+        window.switchPage = function(pageId) {
+            if (typeof originalSwitchPage === 'function') originalSwitchPage(pageId);
+            
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            const target = document.getElementById(pageId);
+            
+            if(target) target.style.display = 'block'; 
+            
+            if(pageId === 'archive-page') renderArchive();
+        };
     </script>
 
 </body>
